@@ -1,0 +1,6 @@
+[package]
+name = "rust_tm"
+version = "0.1.0"
+authors = ["Philipp <pengelmann92@googlemail.com>"]
+
+[dependencies]
