@@ -1,4 +1,5 @@
 use direction;
+
 pub struct Tape {
     pub alphabet: Vec<char>,
     pub head_position: i32,
@@ -11,7 +12,7 @@ impl Tape {
     }
 
     pub fn write(&mut self, character: char) {
-        if self.head_position < 1 || !self.alphabet.contains(&character) {
+        if !(self.head_position >= 1 && self.alphabet.contains(&character)) {
             return
         }
 
@@ -20,7 +21,7 @@ impl Tape {
 
     pub fn read(&mut self) -> char {
         if self.head_position as usize > self.tape.len() {
-            panic!("Trying to read character at invalid position: {}", self.head_position.to_string());
+            panic!("Trying to read character at invalid position: {}.", self.head_position.to_string());
         }
 
         self.tape[self.head_position as usize]
