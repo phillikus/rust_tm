@@ -1,8 +1,7 @@
 use tape;
-use direction;
 use transition;
+use direction;
 use state;
-use std;
 
 pub struct TM {
     states: Vec<state::State>,
@@ -53,5 +52,48 @@ impl TM {
         }
 
         println!("Tape after step {0}: {1} -> Head position: {2}", step, self.tape.to_string(), self.tape.head_position);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn create_tm() -> TM {
+        let tape = tape::Tape::new("$|#", "$||#");
+        let states = vec![
+            state::State::new('0', state::StateType::Start),
+            state::State::new('1', state::StateType::Empty),
+            state::State::new('f', state::StateType::Final)
+        ];
+
+        let transitions = vec![
+            transition::Transition::new('0', '$', '1', '$', direction::Direction::Right),
+            transition::Transition::new('1', '|', '1', '|', direction::Direction::Right),
+            transition::Transition::new('1', '#', 'f', '|', direction::Direction::None)
+        ];
+
+        return TM::new(states, transitions, tape);
+    }
+
+    #[test]
+    fn new_should_create_instance() {
+        let tm : TM = create_tm();
+        assert_eq!("$||#", tm.tape.to_string());
+    }
+
+    #[test]
+    fn get_first_state_should_return_correct_state() {
+        let tm : TM = create_tm();
+        let first_state = tm.get_first_state();
+        assert_eq!('0', first_state.id);
+        assert_eq!(state::StateType::Start, first_state.state_type);
+    }
+
+    #[test]
+    fn process_should_yield_finished_tm() {
+        let mut tm : TM = create_tm();
+        tm.process(false);
+        assert_eq!("$|||", tm.tape.to_string());
     }
 }

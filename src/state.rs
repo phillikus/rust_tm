@@ -1,4 +1,4 @@
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 #[derive(Copy)]
 pub enum StateType {
     Start,

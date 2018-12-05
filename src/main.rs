@@ -5,12 +5,29 @@ mod transition;
 mod tm;
 
 fn main() {
-    let mut tm : tm::TM = subtract("$|||#||");
+    println!("Increment TM:");
+    let mut tm : tm::TM = increment("$||#");
     tm.process(true);
+    println!("-------");
+    
+    println!("Decrement TM:");
+    tm = decrement("$||||#");
+    tm.process(true);
+    println!("-------");
+
+    println!("Addition TM:");
+    tm = add("$|||&||#");
+    tm.process(true);
+    println!("-------");
+
+    println!("Subtraction TM:");
+    tm = subtract("$|||#||#");
+    tm.process(true);
+    println!("-------");
 }
 
 fn increment(word: &str) -> tm::TM {
-    let mut tape = tape::Tape::new("$|#", word);
+    let tape = tape::Tape::new("$|#", word);
     let states = vec![
         state::State::new('0', state::StateType::Start),
         state::State::new('1', state::StateType::Empty),
